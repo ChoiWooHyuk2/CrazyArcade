@@ -26,6 +26,8 @@ void mainManner()
 			PlaySound(L"fight.wav", NULL, SND_ASYNC | SND_LOOP | SND_NOSTOP);
 			game = GAME::MENU;
 		}
+		else if (input.GetKeyDown(VK_ESCAPE))
+			exit(0);
 		//ÇÙ
 		HACK();
 }
@@ -353,7 +355,7 @@ void mainMenu()
 	{
 		if (input.GetKeyDown(VK_SPACE))
 		{
-			PlaySound(0, 0, 0);
+			PlaySound(L"round_end.wav", NULL, SND_ASYNC);
 			game = GAME::INGAME;
 		}
 		else if (input.GetKeyDown(VK_TAB))
@@ -424,8 +426,10 @@ void update()
 		Player1coolTime = 1700000000;
 	}
 
-	if (Player1.Hp <= 0 || Player2.Hp <= 0)
+	if (Player1.Hp <= 0 || Player2.Hp <= 0) {
 		game = GAME::END;
+		PlaySound(L"death.wav", NULL, SND_ASYNC);
+	}
 	HACK();
 }
 
