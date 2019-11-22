@@ -23,6 +23,7 @@ void mainManner()
 	doubleBuffer.WriteBuffer(90, 20, Buffer3);
 		if (input.GetKeyDown(VK_ESCAPE))
 		{
+			PlaySound(L"fight.wav", NULL, SND_ASYNC | SND_LOOP | SND_NOSTOP);
 			game = GAME::MENU;
 		}
 		//琴
@@ -40,8 +41,14 @@ void printMap()
 				{
 					if (Map[x][y].Hp <= 0)
 						Map[x][y].block = false;
-
-					doubleBuffer.WriteBuffer(x, y, "♂");
+					if(Map[x][y].Hp == 3)
+					doubleBuffer.WriteBuffer(x, y, "⒚");
+					else if (Map[x][y].Hp == 2)
+						doubleBuffer.WriteBuffer(x, y, "♂");
+					else if (Map[x][y].Hp == 1)
+						doubleBuffer.WriteBuffer(x, y, "∴");
+					else if (Map[x][y].Hp <= 4000 && Map[x][y].Hp >= 4)
+						doubleBuffer.WriteBuffer(x, y, "⒚");
 				}
 			}
 		}
@@ -109,6 +116,7 @@ void mainEND()
 	if (input.GetKeyDown(VK_SPACE))
 	{
 		Init();
+		PlaySound(L"fight.wav", NULL, SND_ASYNC | SND_LOOP | SND_NOSTOP);
 		game = GAME::MENU;
 	}
 }
@@ -123,7 +131,6 @@ void Init()
 	Player2.Hp = 10;
 	Player1.BoobLength = 4;
 	Player2.BoobLength = 4;
-
 	Player1.player = Player::Playercheck1;
 	Player2.player = Player::Playercheck2;
 	//y
@@ -322,6 +329,10 @@ void HACK()
 
 void mainMenu()
 {
+	if (sound) {
+		PlaySound(L"fight.wav", NULL, SND_ASYNC | SND_LOOP | SND_NOSTOP);
+		sound = false;
+	}
 	doubleBuffer.WriteBuffer(3, 2, "  /$$$$$$                                                /$$$$$$                                      /$$          ");
 	doubleBuffer.WriteBuffer(3, 3, " /$$__  $$                                              /$$__  $$                                    | $$          ");
 	doubleBuffer.WriteBuffer(3, 4, "| $$  \__/  /$$$$$$  /$$$$$$  /$$$$$$$$  /$$   /$$      | $$  \ $$  /$$$$$$   /$$$$$$$  /$$$$$$    /$$$$$$$ /$$$$$$ ");
@@ -341,7 +352,10 @@ void mainMenu()
 	if (_kbhit())
 	{
 		if (input.GetKeyDown(VK_SPACE))
+		{
+			PlaySound(0, 0, 0);
 			game = GAME::INGAME;
+		}
 		else if (input.GetKeyDown(VK_TAB))
 			game = GAME::MANNERS;
 		else if (input.GetKeyDown(VK_ESCAPE))
@@ -361,6 +375,7 @@ void render()
 
 void update()
 {
+	
 	PrintPlayerHp();
 	currentTime = time(0);
 
@@ -395,6 +410,7 @@ void update()
 	//气藕家券 player2
 	if (currentTime - Player2coolTime >= coolTime)
 	{
+		PlaySound(L"boom1.wav", NULL, SND_ASYNC );
 		Writeboob2 = false;
 		CheckBoob(currentPlayer2, currentPlayer2.BoobLength);
 		Player2coolTime = 1700000000;
@@ -402,6 +418,7 @@ void update()
 	//气藕家券 player1
 	if (currentTime - Player1coolTime >= coolTime)
 	{
+		PlaySound(L"boom1.wav", NULL, SND_ASYNC );
 		Writeboob1 = false;
 		CheckBoob(currentPlayer1, currentPlayer1.BoobLength);
 		Player1coolTime = 1700000000;
@@ -414,7 +431,10 @@ void update()
 
 int main()
 {
+
 	Init();
+
+	
 	doubleBuffer.CreateBuffer(1280,720);
 	while (true)
 	{

@@ -2,8 +2,17 @@
 #include <stdio.h>
 #include <conio.h>
 #include <ctime>
+
+#include <windows.h>
+#include <mmsystem.h>
+
+#pragma comment(lib, "winmm.lib")
+
+
 #include "Input.h" 
 #include "DoubleBuffer.h"
+
+bool sound = true;
 
 //플레이어
 enum Player
